@@ -1,17 +1,17 @@
 package sudoku;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public final class GameStatus {
     private final SudokuBoard currentStatus;
-    private final List<Integer> coordinates;
-    private final int guessedValue;
+    private int row;
+    private int column;
+    private int guessedValue;
 
 
-    public GameStatus(SudokuBoard currentStatus, int guessedValue) {
+    public GameStatus(SudokuBoard currentStatus, int row, int column, int guessedValue) {
         this.currentStatus = currentStatus;
-        this.coordinates = new ArrayList<>();
+        this.row = row;
+        this.column = column;
         this.guessedValue = guessedValue;
     }
 
@@ -19,8 +19,12 @@ public final class GameStatus {
         return currentStatus;
     }
 
-    public List<Integer> getCoordinates() {
-        return coordinates;
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
     }
 
     public int getGuessedValue() {

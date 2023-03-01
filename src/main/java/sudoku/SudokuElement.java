@@ -17,7 +17,7 @@ public class SudokuElement {
     public static SudokuElement createEmptyElement(int size) {
         SudokuElement element = new SudokuElement();
         for (int i = 0; i < size; i++) {
-          element.getPossibilities().add(i + 1);
+            element.getPossibilities().add(i + 1);
         }
         return element;
     }
@@ -33,4 +33,11 @@ public class SudokuElement {
     public void setValue(int value) {
         this.value = value;
     }
+
+    public void removeValue(int row, int column, SudokuBoard board) {
+        int guessedValue = board.getBoard().get(row).getFields().get(column).getValue();
+        board.getBoard().get(row).getFields().get(column).setValue(SudokuElement.EMPTY);
+        board.getBoard().get(row).getFields().get(column).getPossibilities().remove(guessedValue);
+    }
+
 }

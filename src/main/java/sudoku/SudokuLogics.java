@@ -1,11 +1,15 @@
 package sudoku;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SudokuLogics {
+
+    private List<GameStatus> backTrack;
+
+    public SudokuLogics() {
+        this.backTrack = new ArrayList<>();
+    }
 
     public void resolveSudoku(SudokuBoard board) {
         for (int i = 0; i < board.getBoard().size(); i++) {
@@ -13,11 +17,24 @@ public class SudokuLogics {
                 SudokuElement currentElement = board.getBoard().get(i).getFields().get(j);
                 if (currentElement.getValue() == SudokuElement.EMPTY) {
                     preparePossibilities(i, j, currentElement, board);
-                    currentElement.setValue(currentElement.getPossibilities().stream().iterator().next());
+                    currentElement.getPossibilities().stream().findAny().ifPresent(currentElement::setValue);
+                    if (currentElement.getValue() != SudokuElement.EMPTY) {
+                        try {
+                            backTrack.add(new GameStatus(board.deepCopy(), i, j, currentElement.getValue()));
+                        } catch (CloneNotSupportedException e) {
+                            System.err.println(e);
+                        }
+                    } else {
+                        board = backTrack.get(backTrack.size() - 1).getCurrentStatus();
+                        int row = backTrack.get(backTrack.size() - 1).getRow();
+                        int column = backTrack.get(backTrack.size() - 1).getColumn();
+                        int guessedValue = backTrack.get(backTrack.size() - 1).getGuessedValue();
+                        board.getBoard().get(row).getFields().get(column).getPossibilities().remove(guessedValue);
+                    }
                 }
-                System.out.println(board);
             }
         }
+        System.out.println(board);
     }
 
 
@@ -73,6 +90,10 @@ public class SudokuLogics {
             }
         }
         return Collections.emptySet();
+    }
+
+    public List<GameStatus> getBackTrack() {
+        return backTrack;
     }
 }
 
