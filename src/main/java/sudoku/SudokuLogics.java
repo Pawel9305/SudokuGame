@@ -2,36 +2,27 @@ package sudoku;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SudokuLogics {
 
     public void resolveSudoku(SudokuBoard board) {
-        Random randomValueFromPossibilities = new Random();
-        boolean isSolved = false;
-        while(isSolved) {
-            for (int i = 0; i < board.getBoard().size(); i++) {
-                for (int j = 0; j < board.getBoard().size(); j++) {
-
-                    SudokuElement currentElement = board.getBoard().get(i).getFields().get(j);
-                    if (currentElement.getValue() == SudokuElement.EMPTY) {
-                        if (currentElement.getPossibilities().size() == 0) {
-
-                        }
-                        preparePossibilities(i, j, currentElement, board);
-                        currentElement.setValue(
-
-                    }
-                    System.out.println(board);
+        for (int i = 0; i < board.getBoard().size(); i++) {
+            for (int j = 0; j < board.getBoard().size(); j++) {
+                SudokuElement currentElement = board.getBoard().get(i).getFields().get(j);
+                if (currentElement.getValue() == SudokuElement.EMPTY) {
+                    preparePossibilities(i, j, currentElement, board);
+                    currentElement.setValue(currentElement.getPossibilities().stream().iterator().next());
                 }
+                System.out.println(board);
             }
         }
     }
 
+
     public void preparePossibilities(int row, int column, SudokuElement element, SudokuBoard board) {
-        element.getPossibilities().removeAll(rowValues(row,board));
+        element.getPossibilities().removeAll(rowValues(row, board));
         element.getPossibilities().removeAll(columnValues(column, board));
         element.getPossibilities().removeAll(sectionValues(row, column, board));
 
