@@ -42,6 +42,7 @@ public class TestClass {
         sudokuBoard.setElement(8, 8, 3);
         sudokuBoard.setElement(2, 8, 4);
         sudokuBoard.setElement(4, 8, 6);
+
         System.out.println(sudokuLogics.resolveSudoku(sudokuBoard));
 
     }
