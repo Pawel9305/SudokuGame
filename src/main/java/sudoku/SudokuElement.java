@@ -34,10 +34,4 @@ public class SudokuElement {
         this.value = value;
     }
 
-    public void removeValue(int row, int column, SudokuBoard board) {
-        int guessedValue = board.getBoard().get(row).getFields().get(column).getValue();
-        board.getBoard().get(row).getFields().get(column).setValue(SudokuElement.EMPTY);
-        board.getBoard().get(row).getFields().get(column).getPossibilities().remove(guessedValue);
-    }
-
 }

@@ -3,8 +3,8 @@ package sudoku;
 
 public final class GameStatus {
     private final SudokuBoard currentStatus;
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
     private int guessedValue;
 
 

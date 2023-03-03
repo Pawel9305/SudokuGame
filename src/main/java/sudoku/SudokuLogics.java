@@ -25,12 +25,18 @@ public class SudokuLogics {
                             System.err.println(e);
                         }
                     } else {
-                        board = loadAndModifyPrevField(backTrack);
-                        currentElement.getPossibilities().stream().findAny().ifPresent(currentElement::setValue);
+                        while (currentElement.getPossibilities().isEmpty()) {
+                            loadAndModifyPrevField(board, backTrack);
+                            currentElement = SudokuElement.createEmptyElement(board.getBoard().size());
+                            preparePossibilities(i, j, currentElement, board);
+                            currentElement.getPossibilities().stream().findAny().ifPresent(currentElement::setValue);
+                            board.getBoard().get(i).getFields().get(j).setValue(currentElement.getValue());
+                        }
                     }
                 }
             }
         }
+
         System.out.println(board);
         return board;
     }
@@ -90,25 +96,26 @@ public class SudokuLogics {
         return Collections.emptySet();
     }
 
-    public SudokuBoard loadAndModifyPrevField(List<GameStatus> backTrack) {
-
-        for (int i = 1; i < backTrack.size(); i++) {
-            SudokuBoard savedBoard = backTrack.get(backTrack.size() - i).getCurrentStatus();
-            int row = backTrack.get(backTrack.size() - i).getRow();
-            int column = backTrack.get(backTrack.size() - i).getColumn();
-            int guessedValue = backTrack.get(backTrack.size() - i).getGuessedValue();
-            SudokuElement loadedElement = savedBoard.getBoard().get(row).getFields().get(column);
-            loadedElement.getPossibilities().remove(guessedValue);
-            loadedElement.setValue(SudokuElement.EMPTY);
-            if (!loadedElement.getPossibilities().isEmpty()) {
-                loadedElement.getPossibilities().stream()
-                        .findAny()
-                        .ifPresent(loadedElement::setValue);
-                return savedBoard;
+    public void loadAndModifyPrevField(SudokuBoard board, List<GameStatus> backTrack) {
+        if (!backTrack.isEmpty()) {
+            for (int i = 1; i <= backTrack.size(); i++) {
+                SudokuBoard loadedBoard = backTrack.get(backTrack.size() - i).getCurrentStatus();
+                int row = backTrack.get(backTrack.size() - i).getRow();
+                int column = backTrack.get(backTrack.size() - i).getColumn();
+                SudokuElement loadedElement = loadedBoard.getBoard().get(row).getFields().get(column);
+                int guessedValue = backTrack.get(backTrack.size() - i).getGuessedValue();
+                preparePossibilities(row, column, loadedElement, board);
+                loadedElement.getPossibilities().remove(guessedValue);
+                if (!loadedElement.getPossibilities().isEmpty()) {
+                    loadedElement.getPossibilities().stream().findAny().ifPresent(loadedElement::setValue);
+                    board.setElement(loadedElement.getValue(), row, column);
+                    break;
+                }
             }
         }
-        return null;
+
     }
+
 
     public List<GameStatus> getBackTrack() {
         return backTrack;
