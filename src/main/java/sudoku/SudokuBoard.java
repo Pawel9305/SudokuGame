@@ -54,6 +54,24 @@ public final class SudokuBoard extends Prototype<SudokuBoard> {
         return clonedBoard;
     }
 
+    public boolean checkFillings() {
+        int counter = 0;
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.size(); j++) {
+                SudokuElement check = board.get(i).getFields().get(j);
+                if (check.getValue() != SudokuElement.EMPTY) {
+                    counter++;
+                }
+            }
+        }
+        if (counter >= 36) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     @Override
     public String toString() {
         String result = "";

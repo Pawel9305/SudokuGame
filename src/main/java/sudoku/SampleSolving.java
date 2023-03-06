@@ -1,6 +1,6 @@
 package sudoku;
 
-public class TestClass {
+public class SampleSolving {
     public static void main(String[] args) {
         SudokuBoard sudokuBoard = SudokuBoard.createTheBoard();
         SudokuLogics sudokuLogics = new SudokuLogics();
@@ -43,7 +43,7 @@ public class TestClass {
         sudokuBoard.setElement(2, 8, 4);
         sudokuBoard.setElement(4, 8, 6);
 
-        System.out.println(sudokuLogics.resolveSudoku(sudokuBoard));
+        System.out.println(sudokuLogics.solveSudoku(sudokuBoard));
 
     }
 }

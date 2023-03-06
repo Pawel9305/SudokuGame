@@ -30,4 +30,8 @@ public final class GameStatus {
     public int getGuessedValue() {
         return guessedValue;
     }
+
+    public void setGuessedValue(int guessedValue) {
+        this.guessedValue = guessedValue;
+    }
 }
